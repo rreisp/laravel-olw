@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use OpenAI\Laravel\Facades\OpenAI;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/clients', ClientController::class);
 
     Route::get('/chart', function () {
-        return 'Beer';
+        return OpenAI::completions()->create([
+            'model' => 'text-davinci-003',
+            'prompt' => 'Me dê uma controller resource no padrão Laravel',
+            'max_tokens' => 1500
+        ])->choices[0]->text;
     });
 });
 
